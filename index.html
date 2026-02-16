@@ -12,7 +12,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
             background: linear-gradient(to bottom, #0f172a, #1e293b);
             color: white;
             min-height: 100vh;
@@ -114,15 +114,10 @@
             border: none;
             color: #94a3b8;
             cursor: pointer;
-            transition: color 0.2s;
         }
 
         .skip-button:hover {
             color: white;
-        }
-
-        .promise-list {
-            margin-bottom: 32px;
         }
 
         .promise-list p {
@@ -141,7 +136,6 @@
             font-size: 1rem;
             cursor: pointer;
             margin-bottom: 12px;
-            transition: background 0.2s;
         }
 
         .primary-button:hover {
@@ -158,7 +152,6 @@
             font-weight: 600;
             font-size: 1rem;
             cursor: pointer;
-            transition: background 0.2s;
         }
 
         .secondary-button:hover {
@@ -214,7 +207,6 @@
             white-space: nowrap;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .filter-pill.active {
@@ -251,12 +243,7 @@
             font-size: 1.5rem;
         }
 
-        .post-sector {
-            font-size: 0.875rem;
-            color: #94a3b8;
-        }
-
-        .post-time {
+        .post-sector, .post-time {
             font-size: 0.875rem;
             color: #94a3b8;
         }
@@ -297,7 +284,6 @@
             background: none;
             border: none;
             cursor: pointer;
-            transition: color 0.2s;
         }
 
         .reaction-button:hover {
@@ -317,7 +303,6 @@
             font-size: 2rem;
             cursor: pointer;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-            transition: all 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -325,7 +310,6 @@
 
         .fab:hover {
             background: #b91c1c;
-            transform: scale(1.1);
         }
 
         .back-button {
@@ -422,10 +406,6 @@
             line-height: 1.5;
         }
 
-        .hidden {
-            display: none;
-        }
-
         .mood-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -439,7 +419,6 @@
             background: transparent;
             color: white;
             cursor: pointer;
-            transition: all 0.2s;
             font-size: 0.875rem;
         }
 
@@ -462,7 +441,6 @@
             font-size: 0.875rem;
             border: none;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
         .tag-button.selected {
@@ -511,7 +489,7 @@
         const RIGHTS_LIBRARY = [
             {
                 title: 'Unfair Dismissal Basics',
-                content: 'In the UK, you generally need 2 years of service to claim unfair dismissal (with some exceptions like discrimination or whistleblowing). Your employer must follow a fair procedure and have a valid reason. Not legal advice—speak to ACAS or a solicitor if this is happening to you.',
+                content: 'In the UK, you generally need 2 years of service to claim unfair dismissal (with some exceptions like discrimination or whistleblowing). Your employer must follow a fair procedure and have a valid reason. Not legal advice - speak to ACAS or a solicitor if this is happening to you.',
                 tags: ['Unfair Treatment', 'Constructive Dismissal']
             },
             {
@@ -521,7 +499,7 @@
             },
             {
                 title: 'Pay & Working Hours',
-                content: 'Your employer can't pay you below minimum wage. Check if your contract says overtime is unpaid. Working Time Regulations limit you to 48 hours/week average (unless you opt out). If you're doing unpaid work that brings you below minimum wage per hour worked, that's illegal.',
+                content: 'Your employer cannot pay you below minimum wage. Check if your contract says overtime is unpaid. Working Time Regulations limit you to 48 hours per week average (unless you opt out). If you are doing unpaid work that brings you below minimum wage per hour worked, that is illegal.',
                 tags: ['Unpaid Overtime', 'Bad Pay']
             },
             {
@@ -534,7 +512,7 @@
         const SAMPLE_POSTS = [
             {
                 id: 1,
-                body: "Three people left last month. They haven't replaced anyone. Now I'm doing two jobs for the same pay and my manager acts like I should be grateful for the 'opportunity to grow'.",
+                body: "Three people left last month. They have not replaced anyone. Now I am doing two jobs for the same pay and my manager acts like I should be grateful for the opportunity to grow.",
                 mood: 'furious',
                 tags: ['Understaffed', 'Unpaid Overtime', 'Toxic Boss'],
                 sector: 'Retail',
@@ -543,7 +521,7 @@
             },
             {
                 id: 2,
-                body: "Got pulled into a 'performance review' with zero notice. Turns out they're building a case to get rid of me after I complained about my team lead's behaviour. Classic.",
+                body: "Got pulled into a performance review with zero notice. Turns out they are building a case to get rid of me after I complained about my team lead. Classic.",
                 mood: 'drained',
                 tags: ['Bullying', 'Unfair Treatment', 'Constructive Dismissal'],
                 sector: 'Office/Admin',
@@ -552,7 +530,7 @@
             },
             {
                 id: 3,
-                body: "They scheduled a 'mandatory fun' team building day on my day off. Unpaid, obviously. When I said I couldn't make it they said it showed lack of commitment.",
+                body: "They scheduled a mandatory fun team building day on my day off. Unpaid, obviously. When I said I could not make it they said it showed lack of commitment.",
                 mood: 'laughcry',
                 tags: ['No Work-Life Balance', 'Toxic Boss'],
                 sector: 'Tech',
@@ -633,192 +611,50 @@
 
             formatTimeAgo(timestamp) {
                 const minutes = Math.floor((Date.now() - timestamp) / 60000);
-                if (minutes < 60) return `${minutes}m ago`;
+                if (minutes < 60) return minutes + 'm ago';
                 const hours = Math.floor(minutes / 60);
-                if (hours < 24) return `${hours}h ago`;
-                return `${Math.floor(hours / 24)}d ago`;
+                if (hours < 24) return hours + 'h ago';
+                return Math.floor(hours / 24) + 'd ago';
             }
 
             render() {
                 const app = document.getElementById('app');
                 
                 if (this.view === 'mood-check') {
-                    app.innerHTML = `
-                        <div class="container center">
-                            <div style="max-width: 400px; width: 100%;">
-                                <h1>Not My Dream Job</h1>
-                                <p class="subtitle">A safe place before your next move</p>
-                                
-                                <div class="card">
-                                    <h2>How bad is today?</h2>
-                                    ${MOODS.map(mood => `
-                                        <button class="mood-button" onclick="app.selectMood('${mood.id}')">
-                                            <span>${mood.label}</span>
-                                            <span class="emoji">${mood.emoji}</span>
-                                        </button>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    `;
+                    app.innerHTML = '<div class="container center"><div style="max-width: 400px; width: 100%;"><h1>Not My Dream Job</h1><p class="subtitle">A safe place before your next move</p><div class="card"><h2>How bad is today?</h2>' + 
+                        MOODS.map(mood => '<button class="mood-button" onclick="app.selectMood(\'' + mood.id + '\')"><span>' + mood.label + '</span><span class="emoji">' + mood.emoji + '</span></button>').join('') + 
+                        '</div></div></div>';
                 } else if (this.view === 'sector') {
-                    app.innerHTML = `
-                        <div class="container center">
-                            <div style="max-width: 400px; width: 100%;">
-                                <h2>What sector? (Optional)</h2>
-                                <p class="subtitle">Helps us show you relevant posts</p>
-                                
-                                <div class="sector-grid">
-                                    ${SECTORS.map(sector => `
-                                        <button class="sector-button" onclick="app.selectSector('${sector}')">${sector}</button>
-                                    `).join('')}
-                                </div>
-                                
-                                <button class="skip-button" onclick="app.selectSector(null)">Skip</button>
-                            </div>
-                        </div>
-                    `;
+                    app.innerHTML = '<div class="container center"><div style="max-width: 400px; width: 100%;"><h2>What sector? (Optional)</h2><p class="subtitle">Helps us show you relevant posts</p><div class="sector-grid">' + 
+                        SECTORS.map(sector => '<button class="sector-button" onclick="app.selectSector(\'' + sector + '\')">' + sector + '</button>').join('') + 
+                        '</div><button class="skip-button" onclick="app.selectSector(null)">Skip</button></div></div>';
                 } else if (this.view === 'safety-promise') {
-                    app.innerHTML = `
-                        <div class="container center">
-                            <div class="card" style="max-width: 400px;">
-                                <h2>You're anonymous here</h2>
-                                
-                                <div class="promise-list">
-                                    <p>✓ No real names</p>
-                                    <p>✓ No employers shown publicly</p>
-                                    <p>✓ You control what happens next</p>
-                                </div>
-                                
-                                <button class="primary-button" onclick="app.startApp('vent')">I need to vent</button>
-                                <button class="secondary-button" onclick="app.startApp('read')">I just want to read</button>
-                            </div>
-                        </div>
-                    `;
+                    app.innerHTML = '<div class="container center"><div class="card" style="max-width: 400px;"><h2>You are anonymous here</h2><div style="margin-bottom: 32px;"><p style="color: #cbd5e1; margin-bottom: 16px;">✓ No real names</p><p style="color: #cbd5e1; margin-bottom: 16px;">✓ No employers shown publicly</p><p style="color: #cbd5e1; margin-bottom: 16px;">✓ You control what happens next</p></div><button class="primary-button" onclick="app.startApp(\'vent\')">I need to vent</button><button class="secondary-button" onclick="app.startApp(\'read\')">I just want to read</button></div></div>';
                 } else if (this.view === 'compose') {
-                    app.innerHTML = `
-                        <div>
-                            <div class="compose-header">
-                                <button class="back-button" onclick="app.setView('feed')">← Back</button>
-                                <div class="compose-title">Post a Rant</div>
-                                <div style="width: 50px;"></div>
-                            </div>
-                            
-                            <div class="container">
-                                <div class="card">
-                                    <textarea placeholder="What finally pushed you today?" maxlength="1500" oninput="app.newPostBody = this.value; app.render()">${this.newPostBody}</textarea>
-                                    <div class="char-count">${this.newPostBody.length}/1500</div>
-                                </div>
-                                
-                                <div class="card">
-                                    <label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">How are you feeling?</label>
-                                    <div class="mood-grid">
-                                        ${MOODS.map(mood => `
-                                            <button class="mood-select-button ${this.selectedMood === mood.id ? 'selected' : ''}" onclick="app.selectedMood = '${mood.id}'; app.render()">
-                                                <span class="emoji">${mood.emoji}</span>
-                                                <span style="font-size: 0.75rem;">${mood.label}</span>
-                                            </button>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                                
-                                <div class="card">
-                                    <label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">Tags (pick up to 3)</label>
-                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-                                        ${TAGS.map(tag => `
-                                            <button class="tag-button ${this.selectedTags.includes(tag) ? 'selected' : 'unselected'}" onclick="app.toggleTag('${tag}')">${tag}</button>
-                                        `).join('')}
-                                    </div>
-                                </div>
-                                
-                                <div class="warning">
-                                    <p>⚠️ Don't include names, company details, or identifying information</p>
-                                </div>
-                                
-                                <button class="primary-button" onclick="app.submitPost()" ${this.newPostBody.trim().length < 10 ? 'disabled' : ''}>Post Anonymously</button>
-                            </div>
-                        </div>
-                    `;
+                    app.innerHTML = '<div><div class="compose-header"><button class="back-button" onclick="app.setView(\'feed\')">← Back</button><div class="compose-title">Post a Rant</div><div style="width: 50px;"></div></div><div class="container"><div class="card"><textarea placeholder="What finally pushed you today?" maxlength="1500" oninput="app.newPostBody = this.value; app.render()">' + this.newPostBody + '</textarea><div class="char-count">' + this.newPostBody.length + '/1500</div></div><div class="card"><label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">How are you feeling?</label><div class="mood-grid">' + 
+                        MOODS.map(mood => '<button class="mood-select-button ' + (this.selectedMood === mood.id ? 'selected' : '') + '" onclick="app.selectedMood = \'' + mood.id + '\'; app.render()"><span class="emoji">' + mood.emoji + '</span><span style="font-size: 0.75rem;">' + mood.label + '</span></button>').join('') + 
+                        '</div></div><div class="card"><label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">Tags (pick up to 3)</label><div style="display: flex; flex-wrap: wrap; gap: 8px;">' + 
+                        TAGS.map(tag => '<button class="tag-button ' + (this.selectedTags.includes(tag) ? 'selected' : 'unselected') + '" onclick="app.toggleTag(\'' + tag + '\')">' + tag + '</button>').join('') + 
+                        '</div></div><div class="warning"><p>⚠️ Do not include names, company details, or identifying information</p></div><button class="primary-button" onclick="app.submitPost()" ' + (this.newPostBody.trim().length < 10 ? 'disabled' : '') + '>Post Anonymously</button></div></div>';
                 } else if (this.view === 'library') {
-                    app.innerHTML = `
-                        <div>
-                            <div class="compose-header">
-                                <button class="back-button" onclick="app.setView('feed')">← Back</button>
-                                <div class="compose-title">Is This Normal?</div>
-                                <div style="width: 50px;"></div>
-                            </div>
-                            
-                            <div class="container">
-                                <div class="info">
-                                    <p>ℹ️ This is general information, not legal advice. Contact ACAS or a solicitor for your specific situation.</p>
-                                </div>
-                                
-                                ${RIGHTS_LIBRARY.map(item => `
-                                    <div class="rights-card">
-                                        <h3>${item.title}</h3>
-                                        <p>${item.content}</p>
-                                        <div class="tags">
-                                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                                        </div>
-                                    </div>
-                                `).join('')}
-                            </div>
-                        </div>
-                    `;
+                    app.innerHTML = '<div><div class="compose-header"><button class="back-button" onclick="app.setView(\'feed\')">← Back</button><div class="compose-title">Is This Normal?</div><div style="width: 50px;"></div></div><div class="container"><div class="info"><p>ℹ️ This is general information, not legal advice. Contact ACAS or a solicitor for your specific situation.</p></div>' + 
+                        RIGHTS_LIBRARY.map(item => '<div class="rights-card"><h3>' + item.title + '</h3><p>' + item.content + '</p><div class="tags">' + item.tags.map(tag => '<span class="tag">' + tag + '</span>').join('') + '</div></div>').join('') + 
+                        '</div></div>';
                 } else if (this.view === 'feed') {
                     const filteredPosts = this.filterMood ? this.posts.filter(p => p.mood === this.filterMood) : this.posts;
                     
-                    app.innerHTML = `
-                        <div>
-                            <div class="header">
-                                <div class="header-row">
-                                    <div class="header-title">Not My Dream Job</div>
-                                    <button class="small-button" onclick="app.setView('library')">Is this normal?</button>
-                                </div>
-                                
-                                <div class="mood-filter">
-                                    <button class="filter-pill ${!this.filterMood ? 'active' : 'inactive'}" onclick="app.filterMood = null; app.render()">All</button>
-                                    ${MOODS.map(mood => `
-                                        <button class="filter-pill ${this.filterMood === mood.id ? 'active' : 'inactive'}" onclick="app.filterMood = '${mood.id}'; app.render()">${mood.emoji}</button>
-                                    `).join('')}
-                                </div>
-                            </div>
-                            
-                            <div class="container">
-                                ${filteredPosts.map(post => {
-                                    const postMood = MOODS.find(m => m.id === post.mood);
-                                    return `
-                                        <div class="post">
-                                            <div class="post-header">
-                                                <div class="post-meta">
-                                                    <span class="post-emoji">${postMood.emoji}</span>
-                                                    <span class="post-sector">${post.sector}</span>
-                                                </div>
-                                                <span class="post-time">${this.formatTimeAgo(post.timestamp)}</span>
-                                            </div>
-                                            
-                                            <div class="post-body">${post.body}</div>
-                                            
-                                            <div class="tags">
-                                                ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                                            </div>
-                                            
-                                            <div class="reactions">
-                                                ${REACTIONS.map(reaction => `
-                                                    <button class="reaction-button" onclick="app.addReaction(${post.id}, '${reaction.id}')">
-                                                        <span>${reaction.emoji}</span>
-                                                        <span>${post.reactions[reaction.id]}</span>
-                                                    </button>
-                                                `).join('')}
-                                            </div>
-                                        </div>
-                                    `;
-                                }).join('')}
-                            </div>
-                            
-                            <button class="fab" onclick="app.setView('compose')">+</button>
-                        </div>
-                    `;
+                    app.innerHTML = '<div><div class="header"><div class="header-row"><div class="header-title">Not My Dream Job</div><button class="small-button" onclick="app.setView(\'library\')">Is this normal?</button></div><div class="mood-filter"><button class="filter-pill ' + (!this.filterMood ? 'active' : 'inactive') + '" onclick="app.filterMood = null; app.render()">All</button>' + 
+                        MOODS.map(mood => '<button class="filter-pill ' + (this.filterMood === mood.id ? 'active' : 'inactive') + '" onclick="app.filterMood = \'' + mood.id + '\'; app.render()">' + mood.emoji + '</button>').join('') + 
+                        '</div></div><div class="container">' + 
+                        filteredPosts.map(post => {
+                            const postMood = MOODS.find(m => m.id === post.mood);
+                            return '<div class="post"><div class="post-header"><div class="post-meta"><span class="post-emoji">' + postMood.emoji + '</span><span class="post-sector">' + post.sector + '</span></div><span class="post-time">' + this.formatTimeAgo(post.timestamp) + '</span></div><div class="post-body">' + post.body + '</div><div class="tags">' + 
+                                post.tags.map(tag => '<span class="tag">' + tag + '</span>').join('') + 
+                                '</div><div class="reactions">' + 
+                                REACTIONS.map(reaction => '<button class="reaction-button" onclick="app.addReaction(' + post.id + ', \'' + reaction.id + '\')"><span>' + reaction.emoji + '</span><span>' + post.reactions[reaction.id] + '</span></button>').join('') + 
+                                '</div></div>';
+                        }).join('') + 
+                        '</div><button class="fab" onclick="app.setView(\'compose\')">+</button></div>';
                 }
             }
         }
