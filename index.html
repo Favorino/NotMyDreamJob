@@ -578,7 +578,18 @@
                 } else if (this.selectedTags.length < 3) {
                     this.selectedTags.push(tag);
                 }
-                this.render();
+                this.renderCompose();
+            }
+
+            updateCharCount() {
+                const charCount = document.getElementById('char-count');
+                if (charCount) {
+                    charCount.textContent = this.newPostBody.length + '/1500';
+                }
+                const submitBtn = document.getElementById('submit-btn');
+                if (submitBtn) {
+                    submitBtn.disabled = this.newPostBody.trim().length < 10;
+                }
             }
 
             submitPost() {
@@ -617,6 +628,23 @@
                 return Math.floor(hours / 24) + 'd ago';
             }
 
+            renderCompose() {
+                const app = document.getElementById('app');
+                app.innerHTML = '<div><div class="compose-header"><button class="back-button" onclick="app.setView(\'feed\')">← Back</button><div class="compose-title">Post a Rant</div><div style="width: 50px;"></div></div><div class="container"><div class="card"><textarea id="post-textarea" placeholder="What finally pushed you today?" maxlength="1500"></textarea><div class="char-count" id="char-count">0/1500</div></div><div class="card"><label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">How are you feeling?</label><div class="mood-grid">' + 
+                    MOODS.map(mood => '<button class="mood-select-button ' + (this.selectedMood === mood.id ? 'selected' : '') + '" onclick="app.selectedMood = \'' + mood.id + '\'; app.renderCompose()"><span class="emoji">' + mood.emoji + '</span><span style="font-size: 0.75rem;">' + mood.label + '</span></button>').join('') + 
+                    '</div></div><div class="card"><label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">Tags (pick up to 3)</label><div style="display: flex; flex-wrap: wrap; gap: 8px;">' + 
+                    TAGS.map(tag => '<button class="tag-button ' + (this.selectedTags.includes(tag) ? 'selected' : 'unselected') + '" onclick="app.toggleTag(\'' + tag + '\')">' + tag + '</button>').join('') + 
+                    '</div></div><div class="warning"><p>⚠️ Do not include names, company details, or identifying information</p></div><button class="primary-button" id="submit-btn" onclick="app.submitPost()" disabled>Post Anonymously</button></div></div>';
+                
+                const textarea = document.getElementById('post-textarea');
+                textarea.value = this.newPostBody;
+                textarea.addEventListener('input', (e) => {
+                    this.newPostBody = e.target.value;
+                    this.updateCharCount();
+                });
+                this.updateCharCount();
+            }
+
             render() {
                 const app = document.getElementById('app');
                 
@@ -631,11 +659,7 @@
                 } else if (this.view === 'safety-promise') {
                     app.innerHTML = '<div class="container center"><div class="card" style="max-width: 400px;"><h2>You are anonymous here</h2><div style="margin-bottom: 32px;"><p style="color: #cbd5e1; margin-bottom: 16px;">✓ No real names</p><p style="color: #cbd5e1; margin-bottom: 16px;">✓ No employers shown publicly</p><p style="color: #cbd5e1; margin-bottom: 16px;">✓ You control what happens next</p></div><button class="primary-button" onclick="app.startApp(\'vent\')">I need to vent</button><button class="secondary-button" onclick="app.startApp(\'read\')">I just want to read</button></div></div>';
                 } else if (this.view === 'compose') {
-                    app.innerHTML = '<div><div class="compose-header"><button class="back-button" onclick="app.setView(\'feed\')">← Back</button><div class="compose-title">Post a Rant</div><div style="width: 50px;"></div></div><div class="container"><div class="card"><textarea placeholder="What finally pushed you today?" maxlength="1500" oninput="app.newPostBody = this.value; app.render()">' + this.newPostBody + '</textarea><div class="char-count">' + this.newPostBody.length + '/1500</div></div><div class="card"><label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">How are you feeling?</label><div class="mood-grid">' + 
-                        MOODS.map(mood => '<button class="mood-select-button ' + (this.selectedMood === mood.id ? 'selected' : '') + '" onclick="app.selectedMood = \'' + mood.id + '\'; app.render()"><span class="emoji">' + mood.emoji + '</span><span style="font-size: 0.75rem;">' + mood.label + '</span></button>').join('') + 
-                        '</div></div><div class="card"><label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">Tags (pick up to 3)</label><div style="display: flex; flex-wrap: wrap; gap: 8px;">' + 
-                        TAGS.map(tag => '<button class="tag-button ' + (this.selectedTags.includes(tag) ? 'selected' : 'unselected') + '" onclick="app.toggleTag(\'' + tag + '\')">' + tag + '</button>').join('') + 
-                        '</div></div><div class="warning"><p>⚠️ Do not include names, company details, or identifying information</p></div><button class="primary-button" onclick="app.submitPost()" ' + (this.newPostBody.trim().length < 10 ? 'disabled' : '') + '>Post Anonymously</button></div></div>';
+                    this.renderCompose();
                 } else if (this.view === 'library') {
                     app.innerHTML = '<div><div class="compose-header"><button class="back-button" onclick="app.setView(\'feed\')">← Back</button><div class="compose-title">Is This Normal?</div><div style="width: 50px;"></div></div><div class="container"><div class="info"><p>ℹ️ This is general information, not legal advice. Contact ACAS or a solicitor for your specific situation.</p></div>' + 
                         RIGHTS_LIBRARY.map(item => '<div class="rights-card"><h3>' + item.title + '</h3><p>' + item.content + '</p><div class="tags">' + item.tags.map(tag => '<span class="tag">' + tag + '</span>').join('') + '</div></div>').join('') + 
