@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Not My Dream Job</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to bottom, #0f172a, #1e293b);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .subtitle {
+            color: #cbd5e1;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .mood-button {
+            width: 100%;
+            padding: 16px;
+            margin-bottom: 12px;
+            border-radius: 12px;
+            border: 2px solid;
+            background: white;
+            color: #1e293b;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s;
+        }
+
+        .mood-button:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .mood-button .emoji {
+            font-size: 1.5rem;
+        }
+
+        .sector-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .sector-button {
+            padding: 12px;
+            background: #334155;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .sector-button:hover {
+            background: #475569;
+        }
+
+        .skip-button {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .skip-button:hover {
+            color: white;
+        }
+
+        .promise-list {
+            margin-bottom: 32px;
+        }
+
+        .promise-list p {
+            color: #cbd5e1;
+            margin-bottom: 16px;
+        }
+
+        .primary-button {
+            width: 100%;
+            padding: 16px;
+            background: #dc2626;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: background 0.2s;
+        }
+
+        .primary-button:hover {
+            background: #b91c1c;
+        }
+
+        .secondary-button {
+            width: 100%;
+            padding: 16px;
+            background: #334155;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .secondary-button:hover {
+            background: #475569;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #0f172a;
+            border-bottom: 1px solid #334155;
+            padding: 16px;
+            z-index: 10;
+        }
+
+        .header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .header-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .small-button {
+            font-size: 0.875rem;
+            background: #1e293b;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+
+        .small-button:hover {
+            background: #334155;
+        }
+
+        .mood-filter {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .filter-pill {
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            white-space: nowrap;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .filter-pill.active {
+            background: white;
+            color: #0f172a;
+        }
+
+        .filter-pill.inactive {
+            background: #1e293b;
+            color: #cbd5e1;
+        }
+
+        .post {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .post-emoji {
+            font-size: 1.5rem;
+        }
+
+        .post-sector {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .post-time {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .post-body {
+            color: #e2e8f0;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .tag {
+            padding: 4px 8px;
+            background: #334155;
+            border-radius: 999px;
+            font-size: 0.75rem;
+        }
+
+        .reactions {
+            display: flex;
+            gap: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #334155;
+        }
+
+        .reaction-button {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.875rem;
+            color: #94a3b8;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .reaction-button:hover {
+            color: white;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 56px;
+            height: 56px;
+            background: #dc2626;
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .fab:hover {
+            background: #b91c1c;
+            transform: scale(1.1);
+        }
+
+        .back-button {
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .back-button:hover {
+            color: white;
+        }
+
+        .compose-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .compose-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        textarea {
+            width: 100%;
+            background: #0f172a;
+            color: white;
+            padding: 16px;
+            border-radius: 8px;
+            border: none;
+            min-height: 160px;
+            resize: none;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        textarea:focus {
+            outline: 2px solid #475569;
+        }
+
+        .char-count {
+            text-align: right;
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        .warning {
+            background: rgba(120, 53, 15, 0.3);
+            border: 1px solid rgba(217, 119, 6, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .warning p {
+            font-size: 0.875rem;
+            color: #fde68a;
+        }
+
+        .info {
+            background: rgba(120, 53, 15, 0.3);
+            border: 1px solid rgba(217, 119, 6, 0.5);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .info p {
+            font-size: 0.875rem;
+            color: #fde68a;
+        }
+
+        .rights-card {
+            background: #1e293b;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .rights-card h3 {
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .rights-card p {
+            color: #cbd5e1;
+            font-size: 0.875rem;
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .mood-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .mood-select-button {
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #334155;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .mood-select-button:hover {
+            border-color: #475569;
+        }
+
+        .mood-select-button.selected {
+            border-color: white;
+            background: #334155;
+        }
+
+        .mood-select-button .emoji {
+            margin-right: 8px;
+        }
+
+        .tag-button {
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tag-button.selected {
+            background: #dc2626;
+            color: white;
+        }
+
+        .tag-button.unselected {
+            background: #334155;
+            color: #cbd5e1;
+        }
+
+        .tag-button:hover {
+            opacity: 0.8;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const MOODS = [
+            { id: 'furious', emoji: '😤', label: "I'm furious" },
+            { id: 'drained', emoji: '😞', label: "I'm drained" },
+            { id: 'numb', emoji: '😐', label: "Just numb" },
+            { id: 'laughcry', emoji: '🤡', label: "If I don't laugh, I'll cry" },
+            { id: 'sos', emoji: '🆘', label: "Something bad happened" }
+        ];
+
+        const SECTORS = ['NHS', 'Retail', 'Hospitality', 'Tech', 'Education', 'Finance', 'Construction', 'Care Work', 'Office/Admin', 'Other'];
+
+        const TAGS = ['Burnout', 'Micromanagement', 'Unpaid Overtime', 'Harassment', 'Toxic Boss', 'Understaffed', 'Bad Pay', 'No Work-Life Balance', 'Bullying', 'Unfair Treatment', 'Constructive Dismissal', 'Discrimination'];
+
+        const REACTIONS = [
+            { id: 'same', emoji: '🤝', label: 'Same.' },
+            { id: 'flag', emoji: '🚩', label: "That's not okay" },
+            { id: 'solidarity', emoji: '💪', label: 'Solidarity' },
+            { id: 'helpful', emoji: '💡', label: 'This helped me' }
+        ];
+
+        const RIGHTS_LIBRARY = [
+            {
+                title: 'Unfair Dismissal Basics',
+                content: 'In the UK, you generally need 2 years of service to claim unfair dismissal (with some exceptions like discrimination or whistleblowing). Your employer must follow a fair procedure and have a valid reason. Not legal advice—speak to ACAS or a solicitor if this is happening to you.',
+                tags: ['Unfair Treatment', 'Constructive Dismissal']
+            },
+            {
+                title: 'Constructive Dismissal Overview',
+                content: 'This is when your employer makes your working conditions so intolerable that you feel forced to resign. Examples: major pay cuts without agreement, demotion, persistent bullying. You usually need to resign quickly after the breach and have 2 years service. Document everything. Get advice before resigning.',
+                tags: ['Constructive Dismissal', 'Toxic Boss', 'Bullying']
+            },
+            {
+                title: 'Pay & Working Hours',
+                content: 'Your employer can't pay you below minimum wage. Check if your contract says overtime is unpaid. Working Time Regulations limit you to 48 hours/week average (unless you opt out). If you're doing unpaid work that brings you below minimum wage per hour worked, that's illegal.',
+                tags: ['Unpaid Overtime', 'Bad Pay']
+            },
+            {
+                title: 'Harassment & Discrimination',
+                content: 'Harassment related to protected characteristics (age, disability, gender, race, religion, sexual orientation, etc.) is illegal. Your employer must take complaints seriously and protect you. Keep records of incidents, witnesses, and any reports you make. Contact ACAS or a specialist employment solicitor.',
+                tags: ['Harassment', 'Discrimination', 'Bullying']
+            }
+        ];
+
+        const SAMPLE_POSTS = [
+            {
+                id: 1,
+                body: "Three people left last month. They haven't replaced anyone. Now I'm doing two jobs for the same pay and my manager acts like I should be grateful for the 'opportunity to grow'.",
+                mood: 'furious',
+                tags: ['Understaffed', 'Unpaid Overtime', 'Toxic Boss'],
+                sector: 'Retail',
+                timestamp: Date.now() - 3600000,
+                reactions: { same: 12, flag: 3, solidarity: 8, helpful: 0 }
+            },
+            {
+                id: 2,
+                body: "Got pulled into a 'performance review' with zero notice. Turns out they're building a case to get rid of me after I complained about my team lead's behaviour. Classic.",
+                mood: 'drained',
+                tags: ['Bullying', 'Unfair Treatment', 'Constructive Dismissal'],
+                sector: 'Office/Admin',
+                timestamp: Date.now() - 7200000,
+                reactions: { same: 18, flag: 15, solidarity: 6, helpful: 2 }
+            },
+            {
+                id: 3,
+                body: "They scheduled a 'mandatory fun' team building day on my day off. Unpaid, obviously. When I said I couldn't make it they said it showed lack of commitment.",
+                mood: 'laughcry',
+                tags: ['No Work-Life Balance', 'Toxic Boss'],
+                sector: 'Tech',
+                timestamp: Date.now() - 10800000,
+                reactions: { same: 24, flag: 5, solidarity: 11, helpful: 1 }
+            }
+        ];
+
+        class App {
+            constructor() {
+                this.view = 'mood-check';
+                this.userMood = null;
+                this.userSector = null;
+                this.posts = [...SAMPLE_POSTS];
+                this.filterMood = null;
+                this.newPostBody = '';
+                this.selectedTags = [];
+                this.selectedMood = null;
+                this.render();
+            }
+
+            setView(view) {
+                this.view = view;
+                this.render();
+            }
+
+            selectMood(mood) {
+                this.userMood = mood;
+                this.setView('sector');
+            }
+
+            selectSector(sector) {
+                this.userSector = sector;
+                this.setView('safety-promise');
+            }
+
+            startApp(action) {
+                this.setView(action === 'vent' ? 'compose' : 'feed');
+            }
+
+            toggleTag(tag) {
+                const index = this.selectedTags.indexOf(tag);
+                if (index > -1) {
+                    this.selectedTags.splice(index, 1);
+                } else if (this.selectedTags.length < 3) {
+                    this.selectedTags.push(tag);
+                }
+                this.render();
+            }
+
+            submitPost() {
+                if (this.newPostBody.trim().length < 10) return;
+                
+                const newPost = {
+                    id: Date.now(),
+                    body: this.newPostBody,
+                    mood: this.selectedMood || this.userMood,
+                    tags: [...this.selectedTags],
+                    sector: this.userSector,
+                    timestamp: Date.now(),
+                    reactions: { same: 0, flag: 0, solidarity: 0, helpful: 0 }
+                };
+                
+                this.posts.unshift(newPost);
+                this.newPostBody = '';
+                this.selectedTags = [];
+                this.selectedMood = null;
+                this.setView('feed');
+            }
+
+            addReaction(postId, reactionType) {
+                const post = this.posts.find(p => p.id === postId);
+                if (post) {
+                    post.reactions[reactionType]++;
+                    this.render();
+                }
+            }
+
+            formatTimeAgo(timestamp) {
+                const minutes = Math.floor((Date.now() - timestamp) / 60000);
+                if (minutes < 60) return `${minutes}m ago`;
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) return `${hours}h ago`;
+                return `${Math.floor(hours / 24)}d ago`;
+            }
+
+            render() {
+                const app = document.getElementById('app');
+                
+                if (this.view === 'mood-check') {
+                    app.innerHTML = `
+                        <div class="container center">
+                            <div style="max-width: 400px; width: 100%;">
+                                <h1>Not My Dream Job</h1>
+                                <p class="subtitle">A safe place before your next move</p>
+                                
+                                <div class="card">
+                                    <h2>How bad is today?</h2>
+                                    ${MOODS.map(mood => `
+                                        <button class="mood-button" onclick="app.selectMood('${mood.id}')">
+                                            <span>${mood.label}</span>
+                                            <span class="emoji">${mood.emoji}</span>
+                                        </button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else if (this.view === 'sector') {
+                    app.innerHTML = `
+                        <div class="container center">
+                            <div style="max-width: 400px; width: 100%;">
+                                <h2>What sector? (Optional)</h2>
+                                <p class="subtitle">Helps us show you relevant posts</p>
+                                
+                                <div class="sector-grid">
+                                    ${SECTORS.map(sector => `
+                                        <button class="sector-button" onclick="app.selectSector('${sector}')">${sector}</button>
+                                    `).join('')}
+                                </div>
+                                
+                                <button class="skip-button" onclick="app.selectSector(null)">Skip</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (this.view === 'safety-promise') {
+                    app.innerHTML = `
+                        <div class="container center">
+                            <div class="card" style="max-width: 400px;">
+                                <h2>You're anonymous here</h2>
+                                
+                                <div class="promise-list">
+                                    <p>✓ No real names</p>
+                                    <p>✓ No employers shown publicly</p>
+                                    <p>✓ You control what happens next</p>
+                                </div>
+                                
+                                <button class="primary-button" onclick="app.startApp('vent')">I need to vent</button>
+                                <button class="secondary-button" onclick="app.startApp('read')">I just want to read</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (this.view === 'compose') {
+                    app.innerHTML = `
+                        <div>
+                            <div class="compose-header">
+                                <button class="back-button" onclick="app.setView('feed')">← Back</button>
+                                <div class="compose-title">Post a Rant</div>
+                                <div style="width: 50px;"></div>
+                            </div>
+                            
+                            <div class="container">
+                                <div class="card">
+                                    <textarea placeholder="What finally pushed you today?" maxlength="1500" oninput="app.newPostBody = this.value; app.render()">${this.newPostBody}</textarea>
+                                    <div class="char-count">${this.newPostBody.length}/1500</div>
+                                </div>
+                                
+                                <div class="card">
+                                    <label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">How are you feeling?</label>
+                                    <div class="mood-grid">
+                                        ${MOODS.map(mood => `
+                                            <button class="mood-select-button ${this.selectedMood === mood.id ? 'selected' : ''}" onclick="app.selectedMood = '${mood.id}'; app.render()">
+                                                <span class="emoji">${mood.emoji}</span>
+                                                <span style="font-size: 0.75rem;">${mood.label}</span>
+                                            </button>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                
+                                <div class="card">
+                                    <label style="display: block; font-size: 0.875rem; color: #94a3b8; margin-bottom: 12px;">Tags (pick up to 3)</label>
+                                    <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                                        ${TAGS.map(tag => `
+                                            <button class="tag-button ${this.selectedTags.includes(tag) ? 'selected' : 'unselected'}" onclick="app.toggleTag('${tag}')">${tag}</button>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                
+                                <div class="warning">
+                                    <p>⚠️ Don't include names, company details, or identifying information</p>
+                                </div>
+                                
+                                <button class="primary-button" onclick="app.submitPost()" ${this.newPostBody.trim().length < 10 ? 'disabled' : ''}>Post Anonymously</button>
+                            </div>
+                        </div>
+                    `;
+                } else if (this.view === 'library') {
+                    app.innerHTML = `
+                        <div>
+                            <div class="compose-header">
+                                <button class="back-button" onclick="app.setView('feed')">← Back</button>
+                                <div class="compose-title">Is This Normal?</div>
+                                <div style="width: 50px;"></div>
+                            </div>
+                            
+                            <div class="container">
+                                <div class="info">
+                                    <p>ℹ️ This is general information, not legal advice. Contact ACAS or a solicitor for your specific situation.</p>
+                                </div>
+                                
+                                ${RIGHTS_LIBRARY.map(item => `
+                                    <div class="rights-card">
+                                        <h3>${item.title}</h3>
+                                        <p>${item.content}</p>
+                                        <div class="tags">
+                                            ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else if (this.view === 'feed') {
+                    const filteredPosts = this.filterMood ? this.posts.filter(p => p.mood === this.filterMood) : this.posts;
+                    
+                    app.innerHTML = `
+                        <div>
+                            <div class="header">
+                                <div class="header-row">
+                                    <div class="header-title">Not My Dream Job</div>
+                                    <button class="small-button" onclick="app.setView('library')">Is this normal?</button>
+                                </div>
+                                
+                                <div class="mood-filter">
+                                    <button class="filter-pill ${!this.filterMood ? 'active' : 'inactive'}" onclick="app.filterMood = null; app.render()">All</button>
+                                    ${MOODS.map(mood => `
+                                        <button class="filter-pill ${this.filterMood === mood.id ? 'active' : 'inactive'}" onclick="app.filterMood = '${mood.id}'; app.render()">${mood.emoji}</button>
+                                    `).join('')}
+                                </div>
+                            </div>
+                            
+                            <div class="container">
+                                ${filteredPosts.map(post => {
+                                    const postMood = MOODS.find(m => m.id === post.mood);
+                                    return `
+                                        <div class="post">
+                                            <div class="post-header">
+                                                <div class="post-meta">
+                                                    <span class="post-emoji">${postMood.emoji}</span>
+                                                    <span class="post-sector">${post.sector}</span>
+                                                </div>
+                                                <span class="post-time">${this.formatTimeAgo(post.timestamp)}</span>
+                                            </div>
+                                            
+                                            <div class="post-body">${post.body}</div>
+                                            
+                                            <div class="tags">
+                                                ${post.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                                            </div>
+                                            
+                                            <div class="reactions">
+                                                ${REACTIONS.map(reaction => `
+                                                    <button class="reaction-button" onclick="app.addReaction(${post.id}, '${reaction.id}')">
+                                                        <span>${reaction.emoji}</span>
+                                                        <span>${post.reactions[reaction.id]}</span>
+                                                    </button>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                            
+                            <button class="fab" onclick="app.setView('compose')">+</button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        const app = new App();
+    </script>
+</body>
+</html>
